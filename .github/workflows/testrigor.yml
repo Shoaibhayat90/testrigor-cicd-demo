@@ -1,0 +1,23 @@
+name: Run testRigor Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  testrigor:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Trigger testRigor test suite
+      run: |
+        curl -X POST \
+          -H "Content-Type: application/json" \
+          -H "auth-token: ${{ secrets.TESTRIGOR_AUTH_TOKEN }}" \
+          -d '{"forceCancelPreviousTesting":true,"storedValues":{""}}' \
+          "https://api.testrigor.com/api/v1/apps/ua7BMtiYMg7vNumZt/retest"
